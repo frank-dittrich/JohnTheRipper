@@ -89,6 +89,12 @@ extern void BF_std_crypt_exact(int index);
 extern void *BF_std_get_salt(char *ciphertext);
 
 /*
+ * Returns the value of a particular tunable cost
+ * (for BF, there's just one: iterations
+ */
+extern unsigned int BF_iterations(void *salt);
+
+/*
  * Converts an ASCII ciphertext to binary.
  */
 extern void *BF_std_get_binary(char *ciphertext);

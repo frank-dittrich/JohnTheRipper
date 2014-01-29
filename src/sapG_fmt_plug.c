@@ -737,6 +737,10 @@ struct fmt_main fmt_sapG = {
 		FMT_OMP |
 #endif
 		FMT_CASE | FMT_8_BIT | FMT_UTF8,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
 		tests
 	}, {
 		init,
@@ -747,6 +751,11 @@ struct fmt_main fmt_sapG = {
 		split,
 		binary,
 		get_salt,
+#if FMT_MAIN_VERSION > 11
+		{
+			fmt_default_cost,
+		},
+#endif
 		fmt_default_source,
 		{
 			fmt_default_binary_hash_0,

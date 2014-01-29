@@ -345,6 +345,10 @@ struct fmt_main fmt_oracle = {
 		MIN_KEYS_PER_CRYPT,
 		MAX_KEYS_PER_CRYPT,
 		FMT_8_BIT | FMT_UNICODE | FMT_UTF8,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
 		tests
 	}, {
 		init,
@@ -355,6 +359,11 @@ struct fmt_main fmt_oracle = {
 		fmt_default_split,
 		binary,
 		get_salt,
+#if FMT_MAIN_VERSION > 11
+		{
+			fmt_default_cost,
+		},
+#endif
 		fmt_default_source,
 		{
 			binary_hash0,

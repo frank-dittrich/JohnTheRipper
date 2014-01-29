@@ -137,6 +137,9 @@ struct db_salt {
 
 /* Buffered keys, allocated for "single crack" mode only */
 	struct db_keys *keys;
+
+/* Values of tunable costs */
+	unsigned int cost[FMT_TUNABLE_COSTS];
 };
 
 /*
@@ -246,6 +249,10 @@ struct db_main {
 
 /* Number of salts, passwords and guesses */
 	int salt_count, password_count, guess_count;
+
+/* min. and max. cost values per tunable cost */
+	unsigned int min_cost[FMT_TUNABLE_COSTS];
+	unsigned int max_cost[FMT_TUNABLE_COSTS];
 
 /* Ciphertext format */
 	struct fmt_main *format;

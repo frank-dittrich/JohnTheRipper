@@ -22,6 +22,13 @@ struct fmt_main;
  */
 #define DEFAULT_ALIGN MEM_ALIGN_WORD
 
+
+/*
+ * Just in case some formats need more than one iteration count
+ * (determines array size of iteration_count functions)
+ */
+#define FMT_TUNABLE_COSTS	2
+
 /*
  * Some format methods accept pointers to these, yet we can't just include
  * loader.h here because that would be a circular dependency.
@@ -120,6 +127,15 @@ struct fmt_params {
 /* Properties of this format */
 	unsigned int flags;
 
+/*
+ * Descriptions of tunable costs (array of strings)
+ * None of the descriptions should contain tabs, new-lines or commas
+ * A description shouldn't be an empty string
+ * NULL is allowed, but discouraged for tunable costs thet are
+ * correctly reported by one of the cost methods (!= fmt_default_cost)
+ */
+	char *tunable[FMT_TUNABLE_COSTS];
+
 /* Some passwords to test the methods for correct operation (or NULL for no
  * self test, and no benchmark), terminated with a NULL ciphertext. */
 	struct fmt_tests *tests;
@@ -178,6 +194,13 @@ struct fmt_methods {
 
 /* Converts an ASCII salt to its internal representation */
 	void *(*salt)(char *ciphertext);
+/*
+ * These functions return the iteration counts for a given salt,
+ * starting from the iteration count that is most significant
+ * for the total run time of computing a hash
+ */
+	unsigned int (*cost[FMT_TUNABLE_COSTS])(void *salt);
+
 
 /* Reconstructs the ASCII ciphertext from its binary (saltless only).
  * Alternatively, in the simplest case simply returns "source" as-is. */
@@ -263,7 +286,7 @@ struct fmt_private {
 /*
  * A structure to keep a list of supported ciphertext formats.
  */
-#define FMT_MAIN_VERSION 11		/* change if structure changes */
+#define FMT_MAIN_VERSION 12		/* change if structure changes */
 struct fmt_main {
 	struct fmt_params params;
 	struct fmt_methods methods;
@@ -308,6 +331,7 @@ extern char *fmt_default_split(char *ciphertext, int index,
     struct fmt_main *self);
 extern void *fmt_default_binary(char *ciphertext);
 extern void *fmt_default_salt(char *ciphertext);
+extern unsigned int fmt_default_cost(void *salt);
 extern char *fmt_default_source(char *source, void *binary);
 extern int fmt_default_binary_hash(void *binary);
 extern int fmt_default_salt_hash(void *salt);

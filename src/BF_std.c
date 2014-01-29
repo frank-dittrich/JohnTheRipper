@@ -830,6 +830,15 @@ void *BF_std_get_salt(char *ciphertext)
 	return &salt;
 }
 
+/* The only cost tunable for this format is the number of iterations */
+unsigned int BF_iterations(void *salt)
+{
+	BF_salt *bf_salt;
+
+	bf_salt = (BF_salt *) salt;
+	return (unsigned int) (1 << bf_salt->rounds);
+}
+
 void *BF_std_get_binary(char *ciphertext)
 {
 	static BF_binary binary;

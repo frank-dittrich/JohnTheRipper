@@ -545,6 +545,10 @@ struct fmt_main fmt_rawSHA512_ng = {
         MIN_KEYS_PER_CRYPT,
         MAX_KEYS_PER_CRYPT,
         FMT_CASE | FMT_8_BIT | FMT_SPLIT_UNIFIES_CASE | FMT_OMP,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
         tests
     }, {
         init,
@@ -557,6 +561,11 @@ struct fmt_main fmt_rawSHA512_ng = {
         split,
         get_binary,
         fmt_default_salt,
+#if FMT_MAIN_VERSION > 11
+        {
+        	fmt_default_cost,
+        },
+#endif
 #if FMT_MAIN_VERSION > 9
         fmt_default_source,
 #endif

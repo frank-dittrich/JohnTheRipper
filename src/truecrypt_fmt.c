@@ -319,6 +319,10 @@ struct fmt_main fmt_truecrypt = {
 		MIN_KEYS_PER_CRYPT,
 		MAX_KEYS_PER_CRYPT,
 		FMT_CASE | FMT_8_BIT | FMT_OMP,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
 		tests_ripemd160
 	}, {
 		init_ripemd160,
@@ -329,6 +333,11 @@ struct fmt_main fmt_truecrypt = {
 		ms_split,
 		get_binary,
 		get_salt,
+#if FMT_MAIN_VERSION > 11
+		{
+			fmt_default_cost,
+		},
+#endif
 		fmt_default_source,
 		{
 			binary_hash,
@@ -375,6 +384,10 @@ struct fmt_main fmt_truecrypt_sha512 = {
 		MIN_KEYS_PER_CRYPT,
 		MAX_KEYS_PER_CRYPT,
 		FMT_CASE | FMT_8_BIT | FMT_OMP,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
 		tests_sha512
 	}, {
 		init_sha512,
@@ -385,6 +398,11 @@ struct fmt_main fmt_truecrypt_sha512 = {
 		ms_split,
 		get_binary,
 		get_salt,
+#if FMT_MAIN_VERSION > 11
+		{
+			fmt_default_cost,
+		},
+#endif
 		fmt_default_source,
 		{
 			binary_hash,
@@ -431,6 +449,10 @@ struct fmt_main fmt_truecrypt_whirlpool = {
 		MIN_KEYS_PER_CRYPT,
 		MAX_KEYS_PER_CRYPT,
 		FMT_CASE | FMT_8_BIT | FMT_OMP,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
 		tests_whirlpool
 	}, {
 		init_whirlpool,
@@ -441,6 +463,11 @@ struct fmt_main fmt_truecrypt_whirlpool = {
 		ms_split,
 		get_binary,
 		get_salt,
+#if FMT_MAIN_VERSION > 11
+		{
+			fmt_default_cost,
+		},
+#endif
 		fmt_default_source,
 		{
 			binary_hash,

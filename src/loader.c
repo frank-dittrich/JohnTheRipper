@@ -93,6 +93,8 @@ static void read_file(struct db_main *db, char *name, int flags,
 
 void ldr_init_database(struct db_main *db, struct db_options *options)
 {
+	int i;
+
 	pristine_gecos = cfg_get_bool(SECTION_OPTIONS, NULL,
 	        "PristineGecos", 0);
 
@@ -129,6 +131,10 @@ void ldr_init_database(struct db_main *db, struct db_options *options)
 	list_init(&db->plaintexts);
 
 	db->salt_count = db->password_count = db->guess_count = 0;
+	for( i = 0; i < FMT_TUNABLE_COSTS; i++) {
+		db->min_cost[i] = UINT_MAX;
+		db->max_cost[i] = 1;
+	}
 
 	db->format = NULL;
 }
@@ -606,6 +612,8 @@ static void ldr_load_pw_line(struct db_main *db, char *line)
 		} while ((current_salt = current_salt->next));
 
 		if (!current_salt) {
+			int i;
+
 			last_salt = db->salt_hash[salt_hash];
 			current_salt = db->salt_hash[salt_hash] =
 				mem_alloc_tiny(salt_size, MEM_ALIGN_WORD);
@@ -614,7 +622,12 @@ static void ldr_load_pw_line(struct db_main *db, char *line)
 			current_salt->salt = mem_alloc_copy(salt,
 				format->params.salt_size,
 				format->params.salt_align);
-
+			for (i = 0; i < FMT_TUNABLE_COSTS; i++) {
+				if (format->methods.cost[i] == NULL)
+					current_salt->cost[i] = 1;
+				else
+					current_salt->cost[i] = format->methods.cost[i](current_salt->salt);
+			}
 			current_salt->index = fmt_dummy_hash;
 			current_salt->bitmap = NULL;
 			current_salt->list = NULL;
@@ -627,6 +640,12 @@ static void ldr_load_pw_line(struct db_main *db, char *line)
 				current_salt->keys = NULL;
 
 			db->salt_count++;
+			for (i = 0; i < FMT_TUNABLE_COSTS; i++) {
+				if (current_salt->cost[i] < db->min_cost[i])
+					db->min_cost[i] = current_salt->cost[i];
+				if  (current_salt->cost[i] > db->max_cost[i])
+					db->max_cost[i] = current_salt->cost[i];
+			}
 		}
 
 		current_salt->count++;

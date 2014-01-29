@@ -549,6 +549,11 @@ void *fmt_default_salt(char *ciphertext)
 	return ciphertext;
 }
 
+unsigned int fmt_default_cost(void *salt)
+{
+	return (unsigned int) 1;
+}
+
 char *fmt_default_source(char *source, void *binary)
 {
 	return source;

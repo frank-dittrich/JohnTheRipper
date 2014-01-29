@@ -224,6 +224,10 @@ struct fmt_main fmt_haval_256_3 = {
 		MIN_KEYS_PER_CRYPT,
 		MAX_KEYS_PER_CRYPT,
 		FMT_CASE | FMT_8_BIT | FMT_OMP,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
 		haval_256_3_tests
 	}, {
 		init,
@@ -234,6 +238,11 @@ struct fmt_main fmt_haval_256_3 = {
 		fmt_default_split,
 		get_binary_256,
 		fmt_default_salt,
+#if FMT_MAIN_VERSION > 11
+		{
+			fmt_default_cost,
+		},
+#endif
 		fmt_default_source,
 		{
 			fmt_default_binary_hash_0,
@@ -281,6 +290,10 @@ struct fmt_main fmt_haval_128_4 = {
 		MIN_KEYS_PER_CRYPT,
 		MAX_KEYS_PER_CRYPT,
 		FMT_CASE | FMT_8_BIT | FMT_OMP,
+#if FMT_MAIN_VERSION > 11
+		{
+		},
+#endif
 		haval_128_4_tests
 	}, {
 		init,
@@ -291,6 +304,11 @@ struct fmt_main fmt_haval_128_4 = {
 		fmt_default_split,
 		get_binary_128,
 		fmt_default_salt,
+#if FMT_MAIN_VERSION > 11
+		{
+			fmt_default_cost,
+		},
+#endif
 		fmt_default_source,
 		{
 			fmt_default_binary_hash_0,
